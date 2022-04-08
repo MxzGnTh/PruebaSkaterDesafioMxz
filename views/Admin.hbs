@@ -1,0 +1,53 @@
+<h1>Skate Park</h1>
+
+<div class="py-4">
+  <h2>Administración</h2>
+  <hr class="w-50" />
+
+  <table class="table w-50 m-auto">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Foto</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Años de experiencia</th>
+        <th scope="col">Especialidad</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {{#each rows}}
+        <th scope="row"></th>
+        <td>
+          <div style="background-image: url('/img/{{this.foto}}')"></div>
+        </td>
+        <td>{{this.nombre}}</td>
+        <td>{{this.anos_experiencia}}</td>
+        <td>{{this.especialidad}}</td>
+        <td id="check"><input type="checkbox" name="check" checked data-check="true" /></td>
+      </tr>
+      {{/each}}
+
+    </tbody>
+  </table>
+</div>
+
+<script>
+  window.document.addEventListener("DOMContentLoaded", async () => {
+    if (!localStorage.getItem("token")) {
+      window.location.href = "/Login";
+    }
+    const res = await fetch("/api/v1/Admin", {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+    if (!data.ok) {
+      window.location.href = "/Admin";
+    }
+
+  });
+</script>
