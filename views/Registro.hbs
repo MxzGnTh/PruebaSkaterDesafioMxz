@@ -1,41 +1,70 @@
 <h1>Skate Park</h1>
-
 <div class="py-4">
-	<h2>Registro</h2>
-	<hr class="w-50" />
+    <h2>Registro</h2>
+   
+    <hr style="text-align: right; margin-right: 0px;">
 
-	<form>
-		<div class="form-group row w-50 m-auto">
-			<div class="form-group col-12 col-sm-6">
-				<label>Email</label>
-				<input class="form-control m-auto" />
-			</div>
-			<div class="form-group col-12 col-sm-6">
-				<label>Nombre</label>
-				<input class="form-control m-auto" />
-			</div>
-			<div class="form-group col-12 col-sm-6">
-				<label>Password</label>
-				<input class="form-control m-auto" />
-			</div>
-			<div class="form-group col-12 col-sm-6">
-				<label>Repita la password</label>
-				<input class="form-control m-auto" />
-			</div>
-			<div class="form-group col-12 col-sm-6">
-				<label>Años de experiencia</label>
-				<input class="form-control m-auto" />
-			</div>
-			<div class="form-group col-12 col-sm-6">
-				<label>Especialidad</label>
-				<input class="form-control m-auto" />
-			</div>
-			<div class="form-group col-12 col-sm-12">
-				<label>Foto de perfil</label>
-				<input type="file" />
-			</div>
-		</div>
-		<button class="btn btn-info mb-3">Registrarme</button>
-		<p><a href="/login"> Iniciar sesión</a></p>
-	</form>
+    <form  id="formularioRegister" action="/api/v1/registrarUser">
+        <div class="form-group row w-50 m-auto">
+            <div class="form-group col-12 col-sm-6">
+                <label>Email</label>
+                <input class="form-control m-auto" type="email" name="email" placeholder="dany@correo.com" />
+            </div>
+            <div class="form-group col-12 col-sm-6">
+                <label>Nombre</label>
+                <input class="form-control m-auto"  name="nombre" placeholder="nombre" />
+            </div>
+            <div class="form-group col-12 col-sm-6">
+                <label>Password</label>
+                <input class="form-control m-auto" type="password" name="password" placeholder="contraseña" />
+            </div>
+            <div class="form-group col-12 col-sm-6">
+                <label>Repita la password</label>
+                <input class="form-control m-auto" name="password2" type="password" placeholder="contraseña" />
+            </div>
+            <div class="form-group col-12 col-sm-6">
+                <label>Años de experiencia</label>
+                <input class="form-control m-auto" type="number" name="anos_experiencia" placeholder="numero" />
+            </div>
+            <div class="form-group col-12 col-sm-6">
+                <label>Especialidad</label>
+                <input class="form-control m-auto"  name="especialidad" placeholder="kickflip"/>
+            </div>
+            <div class="form-group col-12 col-sm-12 mt-3">
+                <label>Foto de perfil</label>
+                <input type="file" name="foto" />
+            </div>
+        </div>
+        <button class="btn btn-info mt-3" type="submit" >Registrarme</button>
+        <p class="mt-1"><a href="/login"> Iniciar sesión</a></p>
+    </form>
+
 </div>
+<script>
+const formulario = document.getElementById('formularioRegister')
+
+
+formulario.addEventListener('submit', async(e) => {
+    e.preventDefault()
+
+    const formData = new FormData(formulario)
+
+    try {
+
+        const res = await fetch('/api/v1/registrarDatos', {
+            method: 'post',
+            body: formData
+        })
+
+        const data = await res.json()
+    
+
+        window.location.href = "/"
+
+    }catch(error){
+        console.log(error)
+    }
+
+})
+
+</script>

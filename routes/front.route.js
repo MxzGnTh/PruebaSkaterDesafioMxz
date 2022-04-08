@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const {getUsersDB} = require("../database/index")
+const { getUsersDB, getAdminUserDB } = require("../database/index")
 const router = Router()
 
 router.get("/", async (req, res) => {
@@ -8,21 +8,25 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/login", (req, res) => {
-    res.render("inicioSesion")
+    res.render("Login")
 })
 
-router.get("/registroUser", (req, res) => {
-    res.render("registroUser")
+router.get("/registroDatos", (req, res) => {
+    res.render("Registro")
 })
 
 router.get("/adminRoute", async (req, res) => {
-    const rows = await getAdminDB()
+    const rows = await getAdminUserDB()
     res.render("adminRoute", {rows})
     
 })
 
 router.get("/datosperfil", (req, res) => {
-    res.render("datosperfil")
+    res.render("Datos")
+})
+
+router.get("/eliminar",(req, res)=>{
+    res.render('eliminar')
 })
 
 module.exports = router
