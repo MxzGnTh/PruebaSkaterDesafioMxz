@@ -11,14 +11,14 @@ const requireAuth = (req, res, next) => {
     
 
         if (!token) {
-            throw new Error("Formato no válido al  utilizar Bearer");
+            throw new Error("Formato no válido al utilizar Beaber");
         }
 
        const payload = jwt.verify(token, process.env.JWT_SECRET);
-       console.log("file: requireAuth.js ~ line 18 ~ requireAuth ~ payload", payload)
+       console.log( payload)
 
         req.id = payload.id;
-        console.log("file: requireAuth.js ~ line 20 ~ requireAuth ~  req.id ",  req.id )
+        console.log( req.id )
         
         next();
     } catch (error) {
@@ -43,5 +43,4 @@ const requireAuth = (req, res, next) => {
         });
     }
 };
-
 module.exports = { requireAuth };

@@ -17,7 +17,7 @@ const getUsersDB = () =>{
 //registro de usuario
 const postUserDB = async ({email,nombre,password,anos_experiencia,especialidad,foto}) =>{
     const client = await pool.connect();
-    const values = [email,nombre,password,anos_experiencia,especialidad,pathFoto]
+    const values = [email,nombre,password,anos_experiencia,especialidad,foto]
     const query = {
         text: "INSERT INTO skaters (email,nombre,password,anos_experiencia,especialidad,foto) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
         values,
@@ -147,5 +147,4 @@ module.exports = {
     deleteUserDB,
     updateUserDB,
     migrar,
-
 }

@@ -11,22 +11,24 @@ router.get("/login", (req, res) => {
     res.render("Login")
 })
 
-router.get("/registroDatos", (req, res) => {
+router.get("/registroUser", (req, res) => {
     res.render("Registro")
 })
 
 router.get("/adminRoute", async (req, res) => {
     const rows = await getAdminUserDB()
-    res.render("adminRoute", {rows})
+    res.render("Admin", {rows})
     
 })
 
-router.get("/datosperfil", (req, res) => {
+router.get("/editarPerfil", (req, res) => {
     res.render("Datos")
 })
 
 router.get("/eliminar",(req, res)=>{
     res.render('eliminar')
 })
+
+
 
 module.exports = router

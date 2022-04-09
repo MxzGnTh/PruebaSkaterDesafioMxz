@@ -6,38 +6,44 @@ const path = require('path');
 
 
 
-const getUsers=async (req, res) => {
+const getUser =async (req, res) => {
     getUsersDB()
     .then(rows => res.json({ok: true, skaters: rows}))
     .catch (error => res.json({ok: false, msg: error}))
     
 }
 const postUsers = async (req, res) => {
-   //Datos usuario 
-    const {email,nombre,anos_experiencia,especialidad}=req.body
-    //FOTO
-    const {Foto} = req.files 
-    
-    //proteger foto
-    const pathFoto =`${nanoid()}.${foto.mimetype.split('/')[1]}`
+    //Datos usuario 
+     const {email,nombre, password, anos_experiencia, especialidad,}= req.body
+     //FOTO
+     const {foto} = req.files;
+     //ENCRIPTAR CONTRASEÑA
+     const salt = await bcryptjs.genSalt(10)
+     const hash = await bcryptjs.hash(password, salt)
+     //ENCRIPTAR foto
+     const pathFoto =`${nanoid()}.${foto.mimetype.split('/')[1]}`
+ 
+     //guardar foto
+     foto.mv(path.join(__dirname,"../public/img", pathFoto), async(err)=>{
+         if(err) return next(err)       
+         res.json({ok: true, msg: "todo listo"})
+     })
 
-    //ENCRIPTAR CONTRASEÑA
-    const salt = await bcryptjs.genSalt(10)
-    const hash = await bcryptjs.hash(req.body.password, salt)
-    //guardar foto
-    foto.mv(path.join(__dirname,"../public/img", pathFoto), async(err)=>{
-        if(err) return next(err)       
-        res.json({ok: true, msg: "todo listo"})
-    })
 
-    const respuesta = await postUserDB({email,nombre,hash,anos_experiencia,especialidad,pathFoto})
+     req.body.foto = pathFoto
+     req.password = hash
 
-    //crear token
-    const playload ={id:respuesta.id} 
-    const token= jwt.sign(playload,process.env.JWT_SECRET)    
-    return ( token)
-}
-const getLogin=async (req, res) =>{
+     const respuesta = await postUserDB({email, nombre, password, foto, hash,anos_experiencia,especialidad, pathFoto})
+ 
+ 
+     //crear token
+     const playload ={id:respuesta.id} 
+     const token= jwt.sign(playload,process.env.JWT_SECRET)    
+     return ( token)
+ }
+
+
+const getLogin = async (req, res) =>{
 
     const { emaillogin, passwordlogin } = req.body;
     const email = emaillogin;
@@ -47,24 +53,24 @@ const getLogin=async (req, res) =>{
         
         // Validacion de datos en body
         if (!email?.trim() || !password?.trim()) {
-            console.log('campos vacios')
+            console.log('Sin Relleno')
         }
 
         // verificacion de email con DB
         const respuesta = await getUserLoginDB(email);
         const { skaters } = respuesta;
         if (!respuesta.ok) {
-            throw new Error("email incorrecto");
+            throw new Error("Email No encontrado");
         }
 
         if (skaters.email !== email) {
-            throw new Error("No existe el email registrado");
+            throw new Error("No existe registro de este Email");
         }
         // Verificacion de password con DB
         const comparePassword = await bcryptjs.compare(password, skaters.password);
         if (!comparePassword) {
             console.log('contraseña incorrecta');
-            res.json({res:"la contraseña incorrecta"})
+            res.json({res:"contraseña incorrecta"})
         }
 
         // generar JWT
@@ -169,7 +175,7 @@ const updateUser= async (req, res) => {
 }
 
 module.exports={
-    getUsers,
+    getUser,
     getLogin,
     getAdminUSER,
     postUsers,

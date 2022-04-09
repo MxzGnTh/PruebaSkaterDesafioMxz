@@ -49,7 +49,7 @@
 
         try {
 
-            const res = await fetch('/api/v1/datosperfil', {
+            const res = await fetch('/api/v1/editarPerfil', {
                 method: 'put',
                 body: formData
             })
@@ -57,7 +57,7 @@
             const data = await res.json()
         
 
-            window.location.href = "/Admin"
+            window.location.href = "/adminRoute"
 
         }catch(error){
             console.log(error)

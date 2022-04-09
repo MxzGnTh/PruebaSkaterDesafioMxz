@@ -4,7 +4,7 @@
    
     <hr style="text-align: right; margin-right: 0px;">
 
-    <form  id="formularioRegister" action="/api/v1/registrarUser">
+    <form  id="formularioRegister" action="/api/v1/registroUser">
         <div class="form-group row w-50 m-auto">
             <div class="form-group col-12 col-sm-6">
                 <label>Email</label>
@@ -51,7 +51,7 @@ formulario.addEventListener('submit', async(e) => {
 
     try {
 
-        const res = await fetch('/api/v1/registrarDatos', {
+        const res = await fetch('/api/v1/registroUser', {
             method: 'post',
             body: formData
         })
