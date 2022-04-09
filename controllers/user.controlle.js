@@ -14,12 +14,12 @@ const getUser =async (req, res) => {
 }
 const postUsers = async (req, res) => {
     //Datos usuario 
-     const {email,nombre, password, anos_experiencia, especialidad,}= req.body
+     const {email,nombre, password, anos_experiencia, especialidad}= req.body
      //FOTO
      const {foto} = req.files;
      //ENCRIPTAR CONTRASEÑA
      const salt = await bcryptjs.genSalt(10)
-     const hash = await bcryptjs.hash(password, salt)
+     const hash = await bcryptjs.hash(req.body.password, salt)
      //ENCRIPTAR foto
      const pathFoto =`${nanoid()}.${foto.mimetype.split('/')[1]}`
  
@@ -31,9 +31,9 @@ const postUsers = async (req, res) => {
 
 
      req.body.foto = pathFoto
-     req.password = hash
+     req.body.password = hash
 
-     const respuesta = await postUserDB({email, nombre, password, foto, hash,anos_experiencia,especialidad, pathFoto})
+     const respuesta = await postUserDB(req.body)/*({email, nombre, password, foto, hash,anos_experiencia,especialidad, pathFoto})*/
  
  
      //crear token
