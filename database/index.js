@@ -1,3 +1,4 @@
+require('dotenv').config();
 const{Pool}=require('pg')
 const fs = require('fs')
 const path = require('path')
@@ -136,7 +137,7 @@ const migrar = () => {
     pool.query(data)
     .then(() => console.log('Ap'))
     .catch(console.error)
-    .finally(() => pool.end())
+    //.finally(() => pool.end())
 }
 
 module.exports = {
