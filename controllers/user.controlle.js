@@ -19,7 +19,8 @@ const postUsers = async (req, res) => {
      const {foto} = req.files;
      //ENCRIPTAR CONTRASEÑA
      const salt = await bcryptjs.genSalt(10)
-     const hash = await bcryptjs.hash(req.body.password, salt)
+     console.log(password)
+     const hash = await bcryptjs.hash(password, salt)
      //ENCRIPTAR foto
      const pathFoto =`${nanoid()}.${foto.mimetype.split('/')[1]}`
  
@@ -48,7 +49,7 @@ const getLogin = async (req, res) =>{
     const { emaillogin, passwordlogin } = req.body;
     const email = emaillogin;
     const password = passwordlogin;
-
+    console.log(password)
     try {
         
         // Validacion de datos en body
@@ -66,11 +67,12 @@ const getLogin = async (req, res) =>{
         if (skaters.email !== email) {
             throw new Error("No existe registro de este Email");
         }
+        console.log(skaters.password)
         // Verificacion de password con DB
         const comparePassword = await bcryptjs.compare(password, skaters.password);
         if (!comparePassword) {
             console.log('contraseña incorrecta');
-            res.json({res:"contraseña incorrecta"})
+            return res.json({res:"contraseña incorrecta"})
         }
 
         // generar JWT
@@ -79,11 +81,11 @@ const getLogin = async (req, res) =>{
             expiresIn: "1h",
         });
         console.log(skaters,token)
-        res.json({skaters,token})
-        return ({
-            ok: true,
-            token,
-        });
+        return res.json({skaters,token})
+        //return ({
+            //ok: true,
+           // token,
+        //});
        
         
     } catch (error) {
